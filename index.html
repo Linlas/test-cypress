@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO list - Alpine.js</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-light" x-data="alpineApp()">
+
+    <div class="container p-5">
+        
+        <div class="mb-4 row text-center text-primary">
+            <h1>O que fazer hoje?</h1>
+        </div>
+
+        <div class="row bg-white rounded shadow-sm p-2">
+            <div class="col-md">
+                <input @keyup.Enter="addNewTodo()" x-model="todo.task" class="form-control border-0 bg-transparent" id="todo_title" type="text" placeholder="Digite sua tarefa...">
+            </div>
+            <div class="col-auto px-0 mx-0 mr-2">
+                <button @click="addNewTodo()" type="button" class="btn btn-primary">Criar tarefa</button>
+            </div>
+        </div>
+
+        <div class="mt-5 mb-2 border-black-25 border-bottom"></div>
+
+        <div class="row pt-3 justify-content-end">
+            <div class="col-auto d-flex align-items-center">
+                <label class="text-secondary view-opt-label">Filtrar</label>
+                <select class="btn my-2" x-model="filter">
+                    <option value="all" selected>Todos</option>
+                    <option value="incomplete">Em aberto</option>
+                    <option value="complete">Concluídos</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <h3 x-text="'Tarefas cadastradas: ' + filteredTodoList.length" class="mb-3"></h3>
+        </div>
+
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">#</th>
+                            <th>Tarefa</th>
+                            <th style="width: 250px;">Data</th>
+                            <th style="width: 100px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="todo in filteredTodoList" :key="todo.id">
+                            <tr :class="{ completed: todo.complete }">
+                                <td class="align-middle">
+                                    <input
+                                        type="checkbox" 
+                                        class="form-check-input"
+                                        x-on:change="updateTodo()"
+                                        x-model="todo.complete"
+                                    >
+                                </td>
+                                <td class="align-middle" x-text="todo.task"></td>
+                                <td class="align-middle" x-text="getFormatedDate(todo.createdAt)"></td>
+                                <td class="text-end">
+                                    <button class="btn btn-danger" @click="removeTodo(todo)">Excluir</button>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="assets/js/scripts.js"></script>
+    
+</body>
+</html>
