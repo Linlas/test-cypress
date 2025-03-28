@@ -1,6 +1,9 @@
 describe('Teste de Tarefas', () => {
     beforeEach(() => {
         cy.visit('http://127.0.0.1:5500/index.html')
+            .catch(() => {
+                cy.visit('http://127.0.0.1:5500/todo-list-alpine-js/index.html')
+            })
     })
     it('Deve adicionar uma tarefa a lista', () => {
         cy.get('#todo_title').type('Fazer compras');
@@ -22,4 +25,3 @@ describe('Teste de Tarefas', () => {
     });
 
 });
-
