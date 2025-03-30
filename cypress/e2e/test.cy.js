@@ -84,6 +84,16 @@ describe('Teste de Tarefas', () => {
 
     it('O título da página deve ser "TODO list - Alpine.js"', () => {
         cy.title().should('eq', 'TODO list - Alpine.js');
-      });
+    });
+
+    it('Deve contar o número correto de tarefas na lista', () => {
+        const tarefas = ['Fazer exercicios', 'Comer', 'Tomar banho'];
+        tarefas.forEach((tarefa) => {
+            cy.get('#todo_title').type(tarefa);
+            cy.contains('Criar tarefa').click();
+            cy.get('[x-text="todo.task"]').contains(tarefa).should('exist');
+        });
+        cy.get('table tbody tr').should('have.length.greaterThan', 2);
+    });
       
 });
