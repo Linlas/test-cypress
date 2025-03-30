@@ -81,4 +81,9 @@ describe('Teste de Tarefas', () => {
         cy.reload();
         cy.contains('Tarefa persistente').should('exist');
     });
+
+    it('O título da página deve ser "TODO list - Alpine.js"', () => {
+        cy.title().should('eq', 'TODO list - Alpine.js');
+      });
+      
 });
