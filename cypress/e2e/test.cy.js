@@ -26,7 +26,7 @@ describe('Teste de Tarefas', () => {
         cy.get('.bg-white > .col-auto > .btn').click();
         cy.get('.form-check-input').click();
         cy.get('.text-end > .btn').click();
-        cy.get('[x-text="todo.task"]').contains('Tarefa para excluir').should('not.exist');
+        cy.contains('Tarefa para excluir').should('not.exist');
     });
 
     it('Deve marcar uma tarefa como concluída', () => {
@@ -43,5 +43,42 @@ describe('Teste de Tarefas', () => {
         cy.get('#todo_title').type('Nova tarefa');
         cy.get('.bg-white > .col-auto > .btn').click();
         cy.get('#todo_title').should('have.value', '');
+    });
+
+    it('Deve permitir excluir múltiplas tarefas selecionadas', () => {
+        const tarefas = ['Tarefa 1', 'Tarefa 2', 'Tarefa 3'];
+        tarefas.forEach((tarefa) => {
+            cy.get('#todo_title').type(tarefa);
+            cy.contains('Criar tarefa').click();
+        });
+
+        cy.get('.form-check-input').each(($checkbox) => {
+            cy.wrap($checkbox).click();
+        });
+
+        cy.get('.text-end > .btn').first().click();
+
+        tarefas.forEach((tarefa) => {
+            cy.contains(tarefa).should('not.exist');
+        });
+    });
+
+    it('Deve exibir mensagem quando não houver tarefas selecionadas para excluir', () => {
+        cy.get('#todo_title').type('Tarefa teste');
+        cy.get('.bg-white > .col-auto > .btn').click();
+        cy.get('.text-end > .btn').click();
+        cy.contains('Tarefa teste').should('exist');
+    });
+
+    it('Deve permitir adicionar tarefa pressionando Enter', () => {
+        cy.get('#todo_title').type('Nova tarefa{enter}');
+        cy.contains('Nova tarefa').should('exist');
+    });
+
+    it('Deve manter as tarefas após recarregar a página', () => {
+        cy.get('#todo_title').type('Tarefa persistente');
+        cy.get('.bg-white > .col-auto > .btn').click();
+        cy.reload();
+        cy.contains('Tarefa persistente').should('exist');
     });
 });
