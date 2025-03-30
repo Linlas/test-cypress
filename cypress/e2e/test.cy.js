@@ -66,9 +66,9 @@ describe('Teste de Tarefas', () => {
     it('Deve exibir mensagem quando não houver tarefas selecionadas para excluir', () => {
         cy.get('#todo_title').type('Tarefa teste');
         cy.get('.bg-white > .col-auto > .btn').click();
+        cy.contains('Tarefa teste').should('be.visible');
         cy.get('.text-end > .btn').click();
-        cy.contains('Tarefa teste').should('exist');
-    });
+    });    
 
     it('Deve permitir adicionar tarefa pressionando Enter', () => {
         cy.get('#todo_title').type('Nova tarefa{enter}');
